@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>个人知识管理平台</title>
+  <link rel="stylesheet" href="resources/css/layui.css">
+  <script src="resources/layui.js"></script>
+  <script src="resources/jquery.min.js"></script>
+  
+  <script src="resources/common.js"></script>
+  <script src="resources/books.js?1023"></script>
+</head>
+<body>
+<!--header-->
+<ul class="layui-nav" lay-filter="">
+  <li class="layui-nav-item layui-this"><a href="#">文档</a></li>
+  <li class="layui-nav-item "><a href="/">研发管理</a></li>
+  <li class="layui-nav-item"><a href="#">考试</a></li>
+  <li class="layui-nav-item">
+    <a href="javascript:;">公司系统</a>
+    <dl class="layui-nav-child"> <!-- 二级菜单 -->
+      <dd><a href="#">产品</a></dd>
+      <dd><a href="#">门户</a></dd>
+      <dd><a href="#">网站</a></dd>
+    </dl>
+  </li>
+  <li class="layui-nav-item ">
+    <a href="javascript:;">系统功能</a>
+    <dl class="layui-nav-child"> <!-- 二级菜单 -->
+      <dd><a href="javascript:openOpsImport();">运维任务导入</a></dd>
+      <dd><a href="tasks.html">进程管理</a></dd>
+    </dl>
+  </li>
+</ul>
+
+<ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="header.jpg" class="layui-nav-img">
+          <span id="login_name">未登陆</span>
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="#">刷新</a></dd>
+          <dd><a href="#">全局设置</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="" id="central">退了</a></li>
+</ul>
+
+<!--header end -->
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>BOOKS</legend>
+</fieldset>
+<div class="layui-btn-group" style="position: absolute;right: 15px;top:115px">
+    <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="API.back()" ><i class="layui-icon">&#xe65c;</i></button>
+    <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="API.summary()"><i class="layui-icon">&#xe60a;</i></button>
+    <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="API.newFolder()"><i class="layui-icon">&#xe62a;</i></button>
+    <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="API.newFile()"><i class="layui-icon">&#xe621;</i></button>
+    <button class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe669;</i></button>
+  </div>
+<div id="nav"></div>
+<table  id="books" style="width:90%;" lay-filter="books" ></table>
+<script type="text/html" id="filename">
+{{showfile(d.isFile,d.name)}} 
+</script>
+
+<script type="text/html" id="tools">
+  <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="view" title="查看"><i class="layui-icon">&#xe705;</i></a>
+  <a class="layui-btn layui-btn-normal layui-btn-xs " lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon" title="del">&#xe640;</i></a>
+</script>
+
+<script>
+function getExt(t){
+  return t.toLowerCase().substring(t.lastIndexOf('.'));
+}
+function isImg(fileName){
+  var ext = getExt(fileName);
+  console.log(fileName);
+  console.log(ext);
+  if(!ext)return false;
+  return "|.png|.jpg|.jpeg|.gif|.bmp"
+  .indexOf(ext)>0;
+}
+function isMd(fileName){
+  var ext = getExt(fileName);
+  if(!ext)return false;
+  return ".md"==ext;
+}
+
+
+function  showfile(isFile,name){
+	//var icon = isFile?'<i class="layui-icon">&#xe621;</i>':'<i class="layui-icon">&#xe62a;</i>';
+
+  if(isFile){
+      var path =API.basepath()+'/'+name;
+      path=fiexPath(path);
+      if(isMd(path))return '<a href="view.html#md/'+path+'" target="_blank"><i class="layui-icon">&#xe621;</i>'+name+'</a>';
+      if(isImg(path))return '<img src="md/'+path+'"/>';
+      return '<a href="md/'+path+'" target="_blank"><i class="layui-icon">&#xe621;</i>'+name+'</a>';
+  }else{
+      return '<a href="javascript:API.go(\''+name+'\')"><i class="layui-icon">&#xe62a;</i>'+name+'</a>';
+  }
+  
+}
+function fiexPath(p){
+  if(p==null)return p;
+  p=p.replace(/\/+/g,'/')
+  if(p.length>1&& p.charAt(0)=='/')p=p.substr(1);
+  return p;
+}
+</script>
+<script>
+layui.use(['table','laytpl','form','element'], function(){
+	 var element = layui.element;
+	 var table = layui.table;
+
+	 var basePath="/";
+   function hoverOpenImg(){
+  var img_show = null; // tips提示
+  $('td img').hover(function(){
+   //alert($(this).attr('src'));
+    var img = "<img class='img_msg' src='"+$(this).attr('src')+"' style='width:500px;' />";
+    img_show = layer.tips(img, this,{
+      tips:[2, 'rgba(41,41,41,.5)']
+      ,area: ['520px']
+    });
+    },function(){
+    layer.close(img_show);
+    });
+    $('td img').attr('style','max-width:70px');
+ }
+
+   function ls(path){
+    Books.ls(path).success(function(data){
+      load(table,data);
+    });
+   }
+
+   function go(path){
+    Books.ls(basePath+'/'+path).success(function(data){
+      load(table,data);
+    });
+   }
+
+   function rm(path){
+    Books.rm(path).success(function(data){
+      ls(basePath);
+    });
+   }
+   function mkdir(path){
+    Books.mkdir(path).success(function(data){
+      ls(basePath);
+    });
+   }
+
+   function touch(path){
+    Books.touch(path).success(function(data){
+      ls(basePath);
+    });
+   }
+
+   function getnavgate(path){
+    var ps =path.split(/\/+/);
+    var pa= [];
+    var cp="/";
+    var pn="HOME";
+    pa.push('<a href="javascript:API.ls(\'');
+      pa.push('/');
+      pa.push('\')">');
+      pa.push("HOME");
+      pa.push("</a>");
+      //pa.push("&gt;");
+    for(var i=0;i<ps.length;i++){
+      //alert(ps[i]);
+      if(ps[i]=='')continue;
+      var str =cp;
+      cp+=ps[i]+"/";
+      pa.push('<a href="javascript:API.ls(\'');
+      pa.push(cp);
+      pa.push('\')">&gt;');
+      pa.push(ps[i]);
+      pa.push("</a>");
+    }
+    return pa.join("");
+   }
+
+   function load(table,data){
+    basePath=data.path;
+    $('#nav').html(getnavgate(basePath));
+    if(data.data!=null){
+      for(var i=0;i<data.data.length;i++){
+        data.data[i].name2=data.data[i].name;
+      }
+    }
+    table.render({
+        elem: '#books'
+        //,url:'books'
+        ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        ,cols: [[
+          //{field:'id', width:80, title: 'ID', sort: true}
+          {field:'name', title: 'name',templet: '#filename',edit: 'text'}
+        ,{field:'size', title: '大小',width:160,sort: true}
+        ,{field:'lastModified', title: '时间',width:180,sort: true}
+        ,{ title: '操作',templet: '#tools',width:150}
+        
+        ]],
+        data:data.data
+        ,even: true
+        ,limit:30
+        ,page: true,
+        done:function(res,curr,count){
+                hoverOpenImg();//显示大图
+        }
+      });
+    table.on('edit(books)', function(obj){
+      var value = obj.value //得到修改后的值
+      ,data = obj.data //得到所在行所有键值
+      ,field = obj.field; //得到字段
+      //alert(value);
+      Books.mv(basePath+'/'+data.name2,basePath+'/'+value).success(function(){layer.msg('修改成功');});
+      //console.log(obj);
+    });
+    table.on('tool(books)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'edit'){
+      if(data.isFile){
+        var path= basePath+"/"+data.name;
+        path=fiexPath(path);
+       window.location.href="edit.html#md/"+path;
+      }else{
+        layer.msg('文件夹不能编辑！');
+      }
+    }else if(obj.event === 'view'){
+      if(data.isFile){
+        var path= basePath+"/"+data.name;
+        path=fiexPath(path);
+       window.location.href="view.html#md/"+path;
+      }else{
+        go(data.name);
+        //layer.msg('文件夹不能编辑！');
+      }
+    }  
+    else if(obj.event === 'del'){
+      layer.confirm('真的删除'+data.name+'么?', function(index){
+        obj.del();
+        var n=basePath+"/"+data.name;
+        n=fiexPath(n);
+        rm(n);
+        layer.close(index);
+      });
+    } });
+   }
+   //lastIndexOf
+   function back(){
+    if(basePath=='/'){layer.msg('哥！不能再往上了');return;}
+    var path="/";
+    if(/^\/w+\/?$/.test(basePath)){
+      path="/";
+    }else{
+      if(basePath.charAt(basePath.length-1)=='/'){
+        path=basePath.substr(basePath.length-1);
+      }
+      path=path.substr(0,path.lastIndexOf('/'));
+      ls(path);
+    }
+
+   }
+
+   function newFile(){
+      layer.prompt({title: '输入文件名称', formType: 0}, function(text, index){
+      var n=basePath+"/"+text;
+      n=fiexPath(n);
+      touch(n);
+       layer.close(index);
+      }
+    );
+   }
+
+   function newFolder(){
+      layer.prompt({title: '输入目录名称', formType: 0}, function(text, index){
+        var n=basePath+"/"+text;
+        n=fiexPath(n);
+        mkdir(n);
+       layer.close(index);
+      }
+    );
+   }
+   function summary(){
+    Books.summary(basePath).success(function(){layer.msg("创建目录文件SUMMARY.md成功");ls(basePath);});
+    
+   }
+
+   window["API"]={basepath:function(){return basePath;},ls:ls,rm:rm,touch:touch,go:go
+   ,back:back,newFile:newFile,newFolder:newFolder,summary:summary};
+   ls("/");
+});
+
+
+$(function(){
+		system.getUser().success(function(data){
+		     $("#login_name").html(data.data.name);
+		     $("#central").html(data.data.central+"中心");
+		  	});
+		});
+function openOpsImport(){
+
+  var index = layer.open({
+          type: 2,
+          content: 'addtask.html',
+          area: ['460px', '320px'],
+          maxmin: true
+        });
+        layer.full(index);
+}
+</script>
+</body>
+</html>

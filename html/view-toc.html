@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>markdown查看</title>
+        <link rel="stylesheet" href="/resources/editormd/css/style.css" />
+        <link rel="stylesheet" href="/resources/editormd/css/editormd.preview.css" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="/resources/css/layui.css" />
+        <style>
+            body {padding: 40px;}
+            
+            #layout > header, .btns {
+                width: auto;
+            }
+            
+            #sidebar {
+                width: 400px;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                right: 0;
+                overflow: hidden;
+                background: #fff;
+                z-index: 100;
+                padding: 18px; 
+                border: 1px solid #ddd;
+                border-top: none;
+                border-bottom: none;
+            }
+            
+            #sidebar:hover {
+                overflow: auto;
+            }
+            
+            #sidebar h1 {
+                font-size: 16px;
+            }
+            
+            #custom-toc-container {
+                padding-left: 0;
+            }
+            
+            #test-editormd-view, #test-editormd-view2 {
+                padding-left: 0;
+                padding-right: 430px;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="layout">
+           <div class="layui-btn-group" style="position: fixed;right: 15px;top:10px;z-index:1000">
+    <button class="layui-btn layui-btn-primary layui-btn-sm">操作</button>
+    <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="window.location.href='/'"><i class="layui-icon">&#xe68e;</i></button>
+    <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="window.location.href='./SUMMARY.md'"><i class="layui-icon">&#xe60a;</i></button>
+    <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="edit()"><i class="layui-icon">&#xe642;</i></button>
+    <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="view()"><i class="layui-icon">&#xe61a;</i></button>
+    <button class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon">&#xe641;</i></button>
+  </div>
+            <div id="sidebar">
+                <h1>Table of Contents</h1>
+                <div class="markdown-body editormd-preview-container" id="custom-toc-container">#custom-toc-container</div>
+            </div>
+            <div id="test-editormd-view">
+                <textarea id="append-test" style="display:none;">${markdown}</textarea>          
+            </div>
+        </div>
+        <!-- <script src="js/zepto.min.js"></script>
+		<script>		
+			var jQuery = Zepto;  // 为了避免修改flowChart.js和sequence-diagram.js的源码，所以使用Zepto.js时想支持flowChart/sequenceDiagram就得加上这一句
+		</script> -->
+        <script src="/resources/editormd/js/jquery.min.js"></script>
+        <script src="/resources/editormd/lib/marked.min.js"></script>
+        <script src="/resources/editormd/lib/prettify.min.js"></script>
+        
+        <script src="/resources/editormd/lib/raphael.min.js"></script>
+        <script src="/resources/editormd/lib/underscore.min.js"></script>
+        <script src="/resources/editormd/lib/sequence-diagram.min.js"></script>
+        <script src="/resources/editormd/lib/flowchart.min.js"></script>
+        <script src="/resources/editormd/lib/jquery.flowchart.min.js"></script>
+
+        <script src="/resources/editormd/js/editormd.js"></script>
+        <script src="/resources/md.js"></script>
+        <script type="text/javascript">
+            function init(md){
+                var testEditormdView;
+                 //var markdown=$('#append-test').val();
+                    
+				    testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                        markdown        : md ,//+ "\r\n" + $("#append-test").text(),
+                        //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                        htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                        //toc             : false,
+                        tocm            : true,    // Using [TOCM]
+                        tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+                        //gfm             : false,
+                        //tocDropdown     : true,
+                        // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+                        emoji           : true,
+                        taskList        : true,
+                        tex             : true,  // 默认不解析
+                        flowChart       : true,  // 默认不解析
+                        sequenceDiagram : true,  // 默认不解析
+                    });
+            }
+        </script>
+        <script>
+            $(function(){
+                var path=getMd();
+                console.log(path);
+                $.ajax(path,{
+                type: 'POST',
+                dataType: 'text',
+                success:e=>{
+                    var state = {title:'',url:window.location.href.split("#")[0]}
+                    history.pushState(state,'',mdfile);
+                    init(e); 
+                },
+                statusCode: {
+                        404: e=>{console.log('404')},
+                        500: e=>{console.log('500')}
+                }
+                })
+            })
+            </script>
+    </body>
+</html>

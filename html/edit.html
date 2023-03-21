@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="stylesheet" href="/resources/editormd/css/style.css"/>
+    <link rel="stylesheet" href="/resources/editormd/css/editormd.min.css"/>
+    <link rel="shortcut icon" href="/resources/editormd/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+<div id="layout">
+    <div id="test-editormd" class="editormd editormd-vertical editormd-theme-eclipse editormd-fullscreen" style="width: 100%">
+        <textarea id="mdeditor-textarea" class="editormd-markdown-textarea" placeholder="Enjoy Markdown! coding now..."
+                  name="test-editormd-markdown-doc" style="display: none;"></textarea>
+        <div class="editormd-preview editormd-preview-theme-eclipse" style="display: block; width: 100%; top: 42px;">
+            <div class="markdown-body editormd-preview-container" previewcontainer="true" style="padding: 20px;">
+            </div>
+    </div>
+</div>
+</div>
+<script src="/resources/editormd/js/jquery.min.js"></script>
+<script src="/resources/editormd/js/editormd.js"></script>
+<script src="/resources/editormd/js/light.js?40"></script>
+<script>
+function getTile(){
+    var url =getMd();
+    if(url==null)return "";
+    var ls = url.lastIndexOf('/')+1;
+    return url=decodeURI(url.substr(ls,url.length));
+}
+function getMd(){
+    var url=window.location.href;
+    var n=null;
+    if(url.indexOf('#')>-1){
+       n=url.substring(url.indexOf('#')+1,url.length);
+    }
+    return n;
+}
+document.title=getTile();
+//var state = {title:'',url:window.location.href.split("#")[0]}
+//history.pushState(state,'',mdfile);
+</script>
+</body>
+</html>

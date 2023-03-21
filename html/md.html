@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <title>--</title>
+    <meta name="keywords" content="markdown在线编辑器,online markdown editor,markdown编辑器,在线编辑markdown,mdeditor"/>
+    <meta name="description" content="mdeditor是一个在线编辑markdown的工具"/>
+    <link rel="stylesheet" href="resources/editormd/css/style.css"/>
+    <link rel="stylesheet" href="resources/editormd/css/editormd.min.css"/>
+    <link rel="shortcut icon" href="/images/logos/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+<div id="layout">
+    <div id="test-editormd" class="editormd editormd-vertical editormd-theme-eclipse editormd-fullscreen" style="width: 100%">
+        <textarea id="mdeditor-textarea" class="editormd-markdown-textarea" placeholder="Enjoy Markdown! coding now..."
+                  name="test-editormd-markdown-doc" style="display: none;"># 欢迎使用 Markdown在线编辑器 MdEditor
+
+
+
+**Markdown是一种轻量级的「标记语言」**
+
+
+![markdown](http://www.mdeditor.com/images/logos/markdown.png "markdown")
+
+
+Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。它允许人们使用易读易写的纯文本格式编写文档，然后转换成格式丰富的HTML页面，Markdown文件的后缀名便是“.md”
+
+
+## MdEditor是一个在线编辑Markdown文档的编辑器
+
+*MdEditor扩展了Markdown的功能（如表格、脚注、内嵌HTML等等），以使让Markdown转换成更多的格式，和更丰富的展示效果，这些功能原初的Markdown尚不具备。*
+
+&gt; Markdown增强版中比较有名的有Markdown Extra、MultiMarkdown、 Maruku等。这些衍生版本要么基于工具，如~~Pandoc~~，Pandao；要么基于网站，如GitHub和Wikipedia，在语法上基本兼容，但在一些语法和渲染效果上有改动。
+
+MdEditor源于Pandao的JavaScript开源项目，开源地址[Editor.md](https://github.com/pandao/editor.md "Editor.md")，并在MIT开源协议的许可范围内进行了优化，以适应广大用户群体的需求。向优秀的markdown开源编辑器原作者Pandao致敬。
+
+
+![Pandao editor.md](https://pandao.github.io/editor.md/images/logos/editormd-logo-180x180.png "Pandao editor.md")
+
+
+
+## MdEditor的功能列表演示
+
+# 标题H1
+
+## 标题H2
+
+### 标题H3
+
+#### 标题H4
+
+##### 标题H5
+
+###### 标题H5
+
+### 字符效果和横线等
+----
+
+~~删除线~~ &lt;s&gt;删除线（开启识别HTML标签时）&lt;/s&gt;
+
+*斜体字*      _斜体字_
+
+**粗体**  __粗体__
+
+***粗斜体*** ___粗斜体___
+
+上标：X&lt;sub&gt;2&lt;/sub&gt;，下标：O&lt;sup&gt;2&lt;/sup&gt;
+
+**缩写(同HTML的abbr标签)**
+&gt; 即更长的单词或短语的缩写形式，前提是开启识别HTML标签时，已默认开启
+
+The &lt;abbr title="Hyper Text Markup Language"&gt;HTML&lt;/abbr&gt; specification is maintained by the &lt;abbr title="World Wide Web Consortium"&gt;W3C&lt;/abbr&gt;.
+### 引用 Blockquotes
+
+&gt; 引用文本 Blockquotes
+
+引用的行内混合 Blockquotes
+
+&gt; 引用：如果想要插入空白换行`即&lt;br /&gt;标签`，在插入处先键入两个以上的空格然后回车即可，[普通链接](http://www.mdeditor.com/)。
+
+### 锚点与链接 Links
+[普通链接](http://www.mdeditor.com/)
+[普通链接带标题](http://www.mdeditor.com/ "普通链接带标题")
+直接链接：&lt;http://www.mdeditor.com&gt;
+[锚点链接][anchor-id]
+[anchor-id]: http://www.mdeditor.com/
+[mailto:test.test@gmail.com](mailto:test.test@gmail.com)
+GFM a-tail link @pandao
+邮箱地址自动链接 test.test@gmail.com  www@vip.qq.com
+&gt; @pandao
+
+### 多语言代码高亮 Codes
+
+#### 行内代码 Inline code
+
+
+执行命令：`npm install marked`
+
+#### 缩进风格
+
+即缩进四个空格，也做为实现类似 `&lt;pre&gt;` 预格式化文本 ( Preformatted Text ) 的功能。
+
+    &lt;?php
+        echo "Hello world!";
+    ?&gt;
+预格式化文本：
+
+    | First Header  | Second Header |
+    | ------------- | ------------- |
+    | Content Cell  | Content Cell  |
+    | Content Cell  | Content Cell  |
+
+#### JS代码
+```javascript
+function test() {
+    console.log("Hello world!");
+}
+```
+
+#### HTML 代码 HTML codes
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;mate charest="utf-8" /&gt;
+        &lt;meta name="keywords" content="Editor.md, Markdown, Editor" /&gt;
+        &lt;title&gt;Hello world!&lt;/title&gt;
+        &lt;style type="text/css"&gt;
+            body{font-size:14px;color:#444;font-family: "Microsoft Yahei", Tahoma, "Hiragino Sans GB", Arial;background:#fff;}
+            ul{list-style: none;}
+            img{border:none;vertical-align: middle;}
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1 class="text-xxl"&gt;Hello world!&lt;/h1&gt;
+        &lt;p class="text-green"&gt;Plain text&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+```
+### 图片 Images
+
+图片加链接 (Image + Link)：
+
+
+[![](http://www.mdeditor.com/images/logos/markdown.png)](http://www.mdeditor.com/images/logos/markdown.png "markdown")
+
+&gt; Follow your heart.
+
+----
+### 列表 Lists
+
+#### 无序列表（减号）Unordered Lists (-)
+
+- 列表一
+- 列表二
+- 列表三
+
+#### 无序列表（星号）Unordered Lists (*)
+
+* 列表一
+* 列表二
+* 列表三
+
+#### 无序列表（加号和嵌套）Unordered Lists (+)
++ 列表一
++ 列表二
+    + 列表二-1
+    + 列表二-2
+    + 列表二-3
++ 列表三
+    * 列表一
+    * 列表二
+    * 列表三
+
+#### 有序列表 Ordered Lists (-)
+
+1. 第一行
+2. 第二行
+3. 第三行
+
+#### GFM task list
+
+- [x] GFM task list 1
+- [x] GFM task list 2
+- [ ] GFM task list 3
+    - [ ] GFM task list 3-1
+    - [ ] GFM task list 3-2
+    - [ ] GFM task list 3-3
+- [ ] GFM task list 4
+    - [ ] GFM task list 4-1
+    - [ ] GFM task list 4-2
+
+----
+
+### 绘制表格 Tables
+
+| 项目        | 价格   |  数量  |
+| --------   | -----:  | :----:  |
+| 计算机      | $1600   |   5     |
+| 手机        |   $12   |   12   |
+| 管线        |    $1    |  234  |
+
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+| Function name | Description                    |
+| ------------- | ------------------------------ |
+| `help()`      | Display the help window.       |
+| `destroy()`   | **Destroy your computer!**     |
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+| :------------ |:---------------:| -----:|
+| col 3 is      | some wordy text | $1600 |
+| col 2 is      | centered        |   $12 |
+| zebra stripes | are neat        |    $1 |
+
+| Item      | Value |
+| --------- | -----:|
+| Computer  | $1600 |
+| Phone     |   $12 |
+| Pipe      |    $1 |
+
+----
+
+#### 特殊符号 HTML Entities Codes
+
+&amp;copy; &amp;  &amp;uml; &amp;trade; &amp;iexcl; &amp;pound;
+&amp;amp; &amp;lt; &amp;gt; &amp;yen; &amp;euro; &amp;reg; &amp;plusmn; &amp;para; &amp;sect; &amp;brvbar; &amp;macr; &amp;laquo; &amp;middot;
+
+X&amp;sup2; Y&amp;sup3; &amp;frac34; &amp;frac14;  &amp;times;  &amp;divide;   &amp;raquo;
+
+18&amp;ordm;C  &amp;quot;  &amp;apos;
+
+[========]
+
+### Emoji表情 :smiley:
+
+&gt; Blockquotes :star:
+
+#### GFM task lists &amp; Emoji &amp; fontAwesome icon emoji &amp; editormd logo emoji :editormd-logo-5x:
+
+- [x] :smiley: @mentions, :smiley: #refs, [links](), **formatting**, and &lt;del&gt;tags&lt;/del&gt; supported :editormd-logo:;
+- [x] list syntax required (any unordered or ordered list supported) :editormd-logo-3x:;
+- [x] [ ] :smiley: this is a complete item :smiley:;
+- [ ] []this is an incomplete item [test link](#) :fa-star: @pandao;
+- [ ] [ ]this is an incomplete item :fa-star: :fa-gear:;
+    - [ ] :smiley: this is an incomplete item [test link](#) :fa-star: :fa-gear:;
+    - [ ] :smiley: this is  :fa-star: :fa-gear: an incomplete item [test link](#);
+
+#### 反斜杠 Escape
+
+\*literal asterisks\*
+
+[========]
+### 科学公式 TeX(KaTeX)
+
+$$E=mc^2$$
+
+行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。
+
+$$x &gt; y$$
+
+$$\(\sqrt{3x-1}+(1+x)^2\)$$
+
+$$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
+
+多行公式：
+
+```math
+\displaystyle
+\left( \sum\_{k=1}^n a\_k b\_k \right)^2
+\leq
+\left( \sum\_{k=1}^n a\_k^2 \right)
+\left( \sum\_{k=1}^n b\_k^2 \right)
+```
+```katex
+\displaystyle
+    \frac{1}{
+        \Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{
+        \frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {
+        1+\frac{e^{-6\pi}}
+        {1+\frac{e^{-8\pi}}
+         {1+\cdots} }
+        }
+    }
+```
+```latex
+f(x) = \int_{-\infty}^\infty
+    \hat f(\xi)\,e^{2 \pi i \xi x}
+    \,d\xi
+```
+### 分页符 Page break
+
+&gt; Print Test: Ctrl + P
+
+[========]
+
+### 绘制流程图 Flowchart
+
+```flow
+st=&gt;start: 用户登陆
+op=&gt;operation: 登陆操作
+cond=&gt;condition: 登陆成功 Yes or No?
+e=&gt;end: 进入后台
+
+st-&gt;op-&gt;cond
+cond(yes)-&gt;e
+cond(no)-&gt;op
+```
+[========]
+
+### 绘制序列图 Sequence Diagram
+
+```seq
+Andrew-&gt;China: Says Hello
+Note right of China: China thinks\nabout it
+China--&gt;Andrew: How are you?
+Andrew-&gt;&gt;China: I am good thanks!
+```
+### End</textarea>
+        <div class="editormd-preview editormd-preview-theme-eclipse" style="display: block; width: 100%; top: 42px;">
+            <div class="markdown-body editormd-preview-container" previewcontainer="true" style="padding: 20px;">
+            </div>
+    </div>
+</div>
+</div>
+<script src="resources/editormd/js/jquery.min.js"></script>
+<script src="resources/editormd/js/editormd.js"></script>
+<script src="resources/editormd/js/light.js"></script>
+</body>
+</html>
