@@ -1,4 +1,4 @@
-module main
+module gomd
 
 go 1.18
 

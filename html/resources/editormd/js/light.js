@@ -136,7 +136,7 @@ document.addEventListener('paste', function(e) {
     if (!e || !e.clipboardData) return;
         var pText = e.clipboardData.getData('text/plain');
         if (pText) {//有文本内容的时候才是true   注意：空字符串''是false
-            mdeditor.insertValue(pText);
+            //mdeditor.insertValue(pText);
         } else if (e.clipboardData.items) {//没有文本内容，判断这个数组，文件可能在这个数组里
             let blob = null, items = e.clipboardData.items;
             for (let i = 0; i < items.length; i++) {
