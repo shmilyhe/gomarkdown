@@ -110,8 +110,8 @@
             $(function(){
                 var path=getMd();
                 console.log(path);
-                $.ajax(path,{
-                type: 'POST',
+                $.ajax(path+"&d="+new Date().getTime(),{
+                type: 'GET',
                 dataType: 'text',
                 success:e=>{
                     var state = {title:'',url:window.location.href.split("#")[0]}

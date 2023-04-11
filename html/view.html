@@ -50,7 +50,7 @@
         <script src="/resources/md.js?1"></script>
         <script type="text/javascript">
 function init(md,resBase){
-    console.log(resBase);
+    //console.log(resBase);
     var testEditormdView, testEditormdView2;
                 //var markdown=$('#append-test').val();
                 testEditormdView = editormd.markdownToHTML("test-editormd-view", {
@@ -84,8 +84,8 @@ document.title=getTile();
 $(function(){
     var path=getMd();
     console.log(path);
-    $.ajax(path,{
-    type: 'POST',
+    $.ajax(path+"&d="+new Date().getTime(),{
+    type: 'GET',
     dataType: 'text',
     success:e=>{
         var state = {title:'',url:window.location.href.split("#")[0]}
