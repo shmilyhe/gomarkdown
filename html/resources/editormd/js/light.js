@@ -208,8 +208,8 @@ function postdata(data){
         failed:function(f){failed=f;return t;}
         }
         $.ajax({
-              type: 'GET',
-              url:"/file?f="+rfile+"&d="+new Date().getTime(),
+              type: 'POST',
+              url:"/file?f="+rfile,
               contentType:"text/plain",
               data:data,
               success: function(rest){
