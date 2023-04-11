@@ -1,5 +1,9 @@
 var mdfile=getMd();
 var relUrl=window.location.href;
+function getParent(url){
+    return url.substring(0,url.lastIndexOf("/"))+"/";
+}
+var resBase=getParent(mdfile);
 function edit(){
     window.location.href="/edit.html#"+mdfile;
 }

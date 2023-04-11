@@ -2000,6 +2000,7 @@
                 flowChart            : settings.flowChart,
                 sequenceDiagram      : settings.sequenceDiagram,
                 previewCodeHighlight : settings.previewCodeHighlight,
+                resBase              : settings.resBase
             };
             
             var markedOptions = this.markedOptions = {
@@ -3397,7 +3398,18 @@
             flowChart            : false,          // flowChart.js only support IE9+
             sequenceDiagram      : false,          // sequenceDiagram.js only support IE9+
         };
-        
+        editormd.$marked.Renderer.prototype.image=function(href,title,text){
+            
+            //startsWith
+            if(!!options.resBase&&href){
+                if(!href.startsWith("http")){
+                    href=resBase+href;
+                }
+            }
+            //console.log(options);
+            var out='<img src="'+href+'" alt="'+text+'"';if(title){out+=' title="'+title+'"'}out+=this.options.xhtml?"/>":">";
+            return out;
+        };
         var settings        = $.extend(defaults, options || {});    
         var marked          = editormd.$marked;
         var markedRenderer  = new marked.Renderer();
@@ -3944,6 +3956,7 @@
             flowChart            : settings.flowChart,
             sequenceDiagram      : settings.sequenceDiagram,
             previewCodeHighlight : settings.previewCodeHighlight,
+            resBase              : settings.resBase
         };
 
         var markedOptions = {

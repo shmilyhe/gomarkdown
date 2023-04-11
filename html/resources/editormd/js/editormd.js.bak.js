@@ -60,7 +60,7 @@
     
     editormd.title        = editormd.$name = "Editor.md";
     editormd.version      = "1.5.0";
-    editormd.homePage     = "http://www.mdeditor.com/";
+    editormd.homePage     = "http://www.i-datax.com";
     editormd.classPrefix  = "editormd-";
     
     editormd.toolbarModes = {
@@ -70,7 +70,7 @@
             "h1", "h2", "h3", "h4", "h5", "h6", "|", 
             "list-ul", "list-ol", "hr", "|",
             "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
-            "goto-line", "watch", "preview", /*"fullscreen",*/ "clear", "search", "|",
+            "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|",
             "help", "info"
         ],
         simple : [
@@ -228,7 +228,7 @@
         
         lang : {
             name        : "zh-cn",
-            description : "开源在线Markdown编辑器<br/>Open source online Markdown editor.",
+            description : "开源在线Markdown编辑器<br/>Open source online Markdown editor.<br/>在MIT开源协议的许可范围内进行了优化，以适应广大用户群体的需求。向优秀的markdown开源编辑器原作者Pandao致敬。",
             tocTitle    : "目录",
             toolbar     : {
                 undo             : "撤销（Ctrl+Z）",
@@ -1965,14 +1965,15 @@
         
         save : function() {
             
-            if (timer === null)
+            var _this            = this;
+            var state            = this.state;
+            var settings         = this.settings;
+
+            if (timer === null && !(!settings.watch && state.preview))
             {
                 return this;
             }
             
-            var _this            = this;
-            var state            = this.state;
-            var settings         = this.settings;
             var cm               = this.cm;            
             var cmValue          = cm.getValue();
             var previewContainer = this.previewContainer;
@@ -3843,7 +3844,7 @@
             {
                 html = html.replace(htmlTagRegex, function($1, $2, $3, $4, $5) {
                     var el = $("<" + $2 + ">" + $4 + "</" + $5 + ">");
-                    var _attrs = $($1)[0].attributes;
+                    var _attrs =($($1)[0]==undefined)?[]:$($1)[0].attributes;
                     var $attrs = {};
                     
                     $.each(_attrs, function(i, e) {
@@ -4177,9 +4178,13 @@
     
     // 使用国外的CDN，加载速度有时会很慢，或者自定义URL
     // You can custom KaTeX load url.
+    //editormd.katexURL  = {
+    //    css : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min",
+    //    js  : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min"
+    //};
     editormd.katexURL  = {
-        css : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min",
-        js  : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min"
+        css : "/resources/editormd/katex/0.3.0/katex.min",
+        js  : "/resources/editormd/katex/0.3.0/katex.min"
     };
     
     editormd.kaTeXLoaded = false;

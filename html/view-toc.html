@@ -80,10 +80,10 @@
         <script src="/resources/editormd/lib/flowchart.min.js"></script>
         <script src="/resources/editormd/lib/jquery.flowchart.min.js"></script>
 
-        <script src="/resources/editormd/js/editormd.js"></script>
-        <script src="/resources/md.js"></script>
+        <script src="/resources/editormd/js/editormd.js?1"></script>
+        <script src="/resources/md.js?12"></script>
         <script type="text/javascript">
-            function init(md){
+            function init(md,resBase){
                 var testEditormdView;
                  //var markdown=$('#append-test').val();
                     
@@ -102,6 +102,7 @@
                         tex             : true,  // 默认不解析
                         flowChart       : true,  // 默认不解析
                         sequenceDiagram : true,  // 默认不解析
+                        resBase         : resBase
                     });
             }
         </script>
@@ -114,8 +115,8 @@
                 dataType: 'text',
                 success:e=>{
                     var state = {title:'',url:window.location.href.split("#")[0]}
-                    history.pushState(state,'',mdfile);
-                    init(e); 
+                    //history.pushState(state,'',mdfile);
+                    init(e,resBase); 
                 },
                 statusCode: {
                         404: e=>{console.log('404')},

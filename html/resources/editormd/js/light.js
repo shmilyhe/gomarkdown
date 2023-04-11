@@ -8,6 +8,10 @@ function getMd(){
     return n;
 }
 var mdfile=getMd();
+function getParent(url){
+    return url.substring(0,url.lastIndexOf("/"))+"/";
+}
+var resBase=getParent(mdfile);
 var rfile=mdfile.replace("md/","")
 var pdir=rfile.substring(0,rfile.lastIndexOf('/'));
 if(!pdir)pdir="/";
@@ -30,7 +34,7 @@ toolBarIconArray.push("download");
 toolBarIconArray.push("save");
 toolBarIconArray.push("home");
 
-function init(md){
+function init(md,resBase){
     $("#test-editormd").removeAttr("class");
     //var md=$("#mdeditor-textarea").text();
     $("#test-editormd").html("");
@@ -52,6 +56,7 @@ function init(md){
         tex: true,                   // 开启科学公式TeX语言支持，默认关闭
         flowChart: true,             // 开启流程图支持，默认关闭
         sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+        resBase: resBase,
         onload: function () {
             this.fullscreen();
             var keyMap = {
@@ -131,12 +136,47 @@ function command(data){
         return t;
     }
 
+function isFromExcel(str){
+    return  str.indexOf("<html")>-1&&str.indexOf("office:excel")>-1
+}
+
+function getTable(str){
+    var arr = str.split(/[\r\n]/);
+ 
+    var list = arr.map(item => {
+          return item.split("\t").filter(con => {return con.length>0});
+        });
+    var h=list[0];
+    var sb=[];
+    sb.push(h.join("|"))
+    var sp=[];
+    for(var i=0;i<h.length;i++){
+        sp.push("------------");
+    }
+    sb.push(sp.join("|"))
+    for(var j=1;j<list.length;j++){
+        sb.push(list[j].join("|"))
+    }
+    return "|"+sb.join("|\n|")+"|";
+}
 
 document.addEventListener('paste', function(e) {
     if (!e || !e.clipboardData) return;
         var pText = e.clipboardData.getData('text/plain');
         if (pText) {//有文本内容的时候才是true   注意：空字符串''是false
             //mdeditor.insertValue(pText);
+            //console.log(pText);
+            if(isFromExcel(e.clipboardData.getData('text/html'))){
+                //console.log( getTable(pText));
+                e.preventDefault(); //阻止默认粘贴事件
+                e.stopPropagation(); //阻止事件冒泡
+                mdeditor.insertValue(getTable(pText));
+            }
+            //console.log()
+            //    e.preventDefault(); //阻止默认粘贴事件
+            //e.stopPropagation(); //阻止事件冒泡
+            
+
         } else if (e.clipboardData.items) {//没有文本内容，判断这个数组，文件可能在这个数组里
             let blob = null, items = e.clipboardData.items;
             for (let i = 0; i < items.length; i++) {
@@ -207,9 +247,9 @@ $(function () {
     type: 'POST',
     dataType: 'text',
     success:e=>{
-        init(e);
+        init(e,resBase);
         var state = {title:'',url:window.location.href.split("#")[0]}
-        history.pushState(state,'',mdfile);
+        //history.pushState(state,'',mdfile);
     },
     statusCode: {
             404: e=>{console.log('404')},
