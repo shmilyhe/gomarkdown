@@ -142,9 +142,11 @@ function isFromExcel(str){
 
 function getTable(str){
     var arr = str.split(/[\r\n]/);
- 
     var list = arr.map(item => {
-          return item.split("\t").filter(con => {return con.length>0});
+        if(item==null||item.length==0)return null;
+          return item.split("\t");
+        }).filter(con => {
+        return con!=null;
         });
     var h=list[0];
     var sb=[];
@@ -243,8 +245,8 @@ function paste(path,file,f){
 
 
 $(function () {
-    $.ajax(mdfile,{
-    type: 'POST',
+    $.ajax(mdfile+"?d="+new Date().getTime(),{
+    type: 'GET',
     dataType: 'text',
     success:e=>{
         init(e,resBase);

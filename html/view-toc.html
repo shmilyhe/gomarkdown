@@ -110,7 +110,7 @@
             $(function(){
                 var path=getMd();
                 console.log(path);
-                $.ajax(path+"&d="+new Date().getTime(),{
+                $.ajax(path+"?d="+new Date().getTime(),{
                 type: 'GET',
                 dataType: 'text',
                 success:e=>{
