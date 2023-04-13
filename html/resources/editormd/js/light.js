@@ -101,7 +101,7 @@ function init(md,resBase){
                 postdata(mdeditor.getMarkdown()).success(function(){alert("success!");});
             },
             home:function(){
-                window.location.href="/books.html"
+                window.location.href="/index.html"
             }
 
 
